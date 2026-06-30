@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { FiBookOpen, FiMail, FiPlus, FiSearch, FiX } from "react-icons/fi";
 import { FaKey, FaShare, FaSignOutAlt, FaTrash, FaUserCircle } from "react-icons/fa";
+import { API_BASE_URL } from "@/lib/api";
 import { isStrongPassword, passwordRulesMessage } from "@/lib/passwordRules";
 
 type Note = {
@@ -84,7 +85,7 @@ export default function Home() {
                 router.replace("/login");
                 return;
             }
-            const res = await axios.get("http://localhost:5000/api/notes", {
+            const res = await axios.get(`${API_BASE_URL}/api/notes`, {
                 headers: { Authorization: `Bearer ${userdata.token}` },
             });
             setNotes(res.data);
@@ -102,7 +103,7 @@ export default function Home() {
     const handleDelete = async (id: string) => {
         try {
             const userdata = getStoredUser();
-            await axios.delete(`http://localhost:5000/api/notes/${id}`, {
+            await axios.delete(`${API_BASE_URL}/api/notes/${id}`, {
                 headers: { Authorization: `Bearer ${userdata.token}` },
             });
             setNotes((prev) => prev.filter((note) => note._id !== id));
@@ -129,7 +130,7 @@ export default function Home() {
             setShareLoading(true);
             const userdata = getStoredUser();
             const res = await axios.put(
-                `http://localhost:5000/api/notes/share/${shareNote._id}`,
+                `${API_BASE_URL}/api/notes/share/${shareNote._id}`,
                 { includeFiles: includeFilesInShare },
                 { headers: { Authorization: `Bearer ${userdata.token}` } }
             );
@@ -156,7 +157,7 @@ export default function Home() {
             setShareLoading(true);
             const userdata = getStoredUser();
             await axios.put(
-                `http://localhost:5000/api/notes/unshare/${shareNote._id}`,
+                `${API_BASE_URL}/api/notes/unshare/${shareNote._id}`,
                 {},
                 { headers: { Authorization: `Bearer ${userdata.token}` } }
             );
@@ -202,7 +203,7 @@ export default function Home() {
         try {
             const userdata = getStoredUser();
             await axios.put(
-                "http://localhost:5000/api/auth/change-password",
+                `${API_BASE_URL}/api/auth/change-password`,
                 { oldPassword, newPassword },
                 { headers: { Authorization: `Bearer ${userdata.token}` } }
             );

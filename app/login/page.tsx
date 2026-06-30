@@ -10,6 +10,7 @@ import { toast } from "react-hot-toast";
 import useForm from "@/hooks/useForm";
 import useAuth from "@/hooks/useAuth";
 import usePasswordToggle from "@/hooks/usePasswordToggle";
+import { API_BASE_URL } from "@/lib/api";
 import { isStrongPassword, passwordRulesMessage } from "@/lib/passwordRules";
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
@@ -42,7 +43,7 @@ export default function Login() {
             return;
         }
         try {
-            const res = await axios.post("http://localhost:5000/api/auth/login", {
+            const res = await axios.post(`${API_BASE_URL}/api/auth/login`, {
                 email,
                 password,
             });
@@ -69,7 +70,7 @@ export default function Login() {
                 toast.error("Google login failed");
                 return;
             }
-            const res = await axios.post("http://localhost:5000/api/auth/google", {
+            const res = await axios.post(`${API_BASE_URL}/api/auth/google`, {
                 firebaseUid: googleUser.user.uid,
                 name: googleUser.user.displayName || "",
                 email: googleUser.user.email,
@@ -112,7 +113,7 @@ export default function Login() {
         setSetupLoading(true);
         try {
             const res = await axios.put(
-                "http://localhost:5000/api/auth/set-password",
+                `${API_BASE_URL}/api/auth/set-password`,
                 { newPassword: setupPassword },
                 { headers: { Authorization: `Bearer ${setupUser.token}` } }
             );
@@ -136,7 +137,7 @@ export default function Login() {
         }
         setResetLoading(true);
         try {
-            await axios.post("http://localhost:5000/api/auth/forgot-password/send-otp", {
+            await axios.post(`${API_BASE_URL}/api/auth/forgot-password/send-otp`, {
                 email: resetEmail,
             });
             toast.success("OTP sent");
@@ -158,7 +159,7 @@ export default function Login() {
         }
         setResetLoading(true);
         try {
-            await axios.post("http://localhost:5000/api/auth/forgot-password/verify-otp", {
+            await axios.post(`${API_BASE_URL}/api/auth/forgot-password/verify-otp`, {
                 email: resetEmail,
                 otp: resetOtp,
             });
@@ -181,7 +182,7 @@ export default function Login() {
         }
         setResetLoading(true);
         try {
-            await axios.put("http://localhost:5000/api/auth/forgot-password/reset", {
+            await axios.put(`${API_BASE_URL}/api/auth/forgot-password/reset`, {
                 email: resetEmail,
                 newPassword: resetPassword,
             });

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import { FiFile, FiFileText, FiLock, FiPaperclip } from "react-icons/fi";
+import { API_BASE_URL } from "@/lib/api";
 
 type SharedAttachment = {
   name: string;
@@ -35,7 +36,7 @@ export default function SharedNote() {
 
     const fetchNote = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/notes/public/${token}`);
+        const res = await axios.get(`${API_BASE_URL}/api/notes/public/${token}`);
         setNote(res.data);
         setError("");
       }
@@ -114,7 +115,7 @@ export default function SharedNote() {
                 {note.attachments.slice(0, 5).map((attachment, index) => (
                   <a
                     key={`${attachment.name}-${attachment.accessToken}`}
-                    href={`http://localhost:5000/api/notes/public/${token}/attachment/${index}/${attachment.accessToken}`}
+                    href={`${API_BASE_URL}/api/notes/public/${token}/attachment/${index}/${attachment.accessToken}`}
                     target="_blank"
                     rel="noreferrer"
                     className="flex items-center gap-3 rounded-xl border border-slate-700 bg-[#10172B] p-3 transition hover:border-cyan-400 hover:bg-[#14213D]"

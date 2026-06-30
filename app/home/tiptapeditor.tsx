@@ -11,6 +11,7 @@ import { FaTrash } from "react-icons/fa";
 import { FaArrowLeft, FaBold, FaItalic, FaHighlighter, FaListUl, FaListOl, FaUndo, FaRedo } from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
 import toast from "react-hot-toast";
+import { API_BASE_URL } from "@/lib/api";
 type Note = {
   _id: string,
   title: string,
@@ -136,7 +137,7 @@ export default function NoteEditor() {
           return;
         }
         const res = await axios.get(
-          `http://localhost:5000/api/notes/${queryNoteId}`,
+          `${API_BASE_URL}/api/notes/${queryNoteId}`,
           {
             headers: { Authorization: `Bearer ${userdata.token}` },
           }
@@ -198,7 +199,7 @@ export default function NoteEditor() {
         return;
       }
       if (!noteId) {
-        const res = await axios.post("http://localhost:5000/api/notes",
+        const res = await axios.post(`${API_BASE_URL}/api/notes`,
           {
             title: effectiveTitle,
             content,
@@ -218,7 +219,7 @@ export default function NoteEditor() {
         setNoteId(res.data._id);
       }
       else {
-        await axios.put(`http://localhost:5000/api/notes/${noteId}`,
+        await axios.put(`${API_BASE_URL}/api/notes/${noteId}`,
           {
             title: effectiveTitle,
             content,
@@ -259,7 +260,7 @@ export default function NoteEditor() {
         router.replace("/login");
         return;
       }
-      await axios.delete(`http://localhost:5000/api/notes/${noteId}`,
+      await axios.delete(`${API_BASE_URL}/api/notes/${noteId}`,
         {
           headers: {
             Authorization: `Bearer ${userdata.token}`
@@ -301,7 +302,7 @@ setShareLoading(true);
 const res=
 await axios.put(
 
-`http://localhost:5000/api/notes/share/${noteId}`,
+`${API_BASE_URL}/api/notes/share/${noteId}`,
 
 {
 includeFiles
@@ -357,7 +358,7 @@ setShareLoading(false);
         return;
       }
       setShareLoading(true);
-      await axios.put(`http://localhost:5000/api/notes/unshare/${noteId}`,
+      await axios.put(`${API_BASE_URL}/api/notes/unshare/${noteId}`,
         {},
         {
           headers: {
