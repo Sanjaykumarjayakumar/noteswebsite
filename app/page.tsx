@@ -11,9 +11,11 @@ export default function HomePage() {
       <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-6xl flex-col">
         <header className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-cyan-400/30 bg-cyan-400/10 text-cyan-300">
-              <FiEdit3 size={22} />
-            </span>
+            <img
+              src="/icon.svg"
+              alt="Notes"
+              className="h-11 w-11 rounded-xl border border-cyan-400/30"
+            />
             <span className="text-lg font-semibold">Notes</span>
           </Link>
           <Link href="/login" className="rounded-xl border border-slate-700 bg-[#16213E] px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-cyan-400 hover:text-white">
