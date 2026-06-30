@@ -1,36 +1,140 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Notes Website
 
-## Getting Started
+A modern and responsive Notes Application built with **Next.js** that allows users to create, edit, delete, search, and organize their personal notes. The application features a clean UI, fast performance, and seamless integration with a backend API.
 
-First, run the development server:
+## Features
+
+- User Authentication (Login & Signup)
+- Create, Read, Update, and Delete (CRUD) Notes and Share Notes
+- Search Notes
+- Responsive Design
+- Fast Performance with Next.js
+- Real-time UI Updates
+- Clean and Modern User Interface
+- Secure API Integration
+
+##  Tech Stack
+
+- **Framework:** Next.js
+- **Language:** TypeScript / JavaScript
+- **Styling:** Tailwind CSS
+- **State Management:** React Context API
+- **HTTP Client:** Axios / Fetch API
+- **Icons:** Lucide React
+- **Deployment:** Vercel
+
+## Project Structure
+
+```
+notes-frontend/
+│── app/
+│── components/
+│── hooks/
+│── lib/
+│── public/
+│── .env.local
+│── package.json
+│── README.md
+```
+
+## Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-username/notes-frontend.git
+```
+
+### 2. Navigate to the project
+
+```bash
+cd notes-frontend
+```
+
+### 3. Install dependencies
+
+```bash
+npm install
+```
+
+or
+
+```bash
+yarn install
+```
+
+or
+
+```bash
+pnpm install
+```
+
+## Environment Variables
+
+Create a `.env.local` file in the root directory and add:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+```
+
+##  Run the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open your browser and visit:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+##  Build for Production
 
-## Learn More
+```bash
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+##  Start Production Server
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+##  Screens
 
-## Deploy on Vercel
+- Login Page
+- Signup Page
+- Dashboard
+- Create Note
+- Search Notes
+- Profile (Optional)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+##  Available Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run dev       # Start development server
+npm run build     # Build for production
+npm run start     # Start production server
+npm run lint      # Run ESLint
+```
+
+##  Backend API
+
+This project connects to a REST API backend for:
+
+- User Authentication
+- Notes CRUD Operations
+- Search Functionality
+
+Configure the API URL using the `.env.local` file.
+
+##  Future Improvements
+
+- Rich Text Editor
+- Note Categories
+- Tags
+- Reminder Notifications
+- Archive Notes
+- Trash & Restore
+- Markdown Support
