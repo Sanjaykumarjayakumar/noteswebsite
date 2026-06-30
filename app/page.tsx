@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { FiCheckCircle, FiEdit3, FiLock, FiSearch } from "react-icons/fi";
-
-const features = [
+const features =[
   { icon: FiEdit3, label: "Write rich notes" },
   { icon: FiSearch, label: "Find ideas fast" },
   { icon: FiLock, label: "Private account" },
 ];
-
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-[#10172B] px-5 py-8 text-white sm:px-10">
@@ -18,14 +16,10 @@ export default function HomePage() {
             </span>
             <span className="text-lg font-semibold">Notes</span>
           </Link>
-          <Link
-            href="/login"
-            className="rounded-xl border border-slate-700 bg-[#16213E] px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-cyan-400 hover:text-white"
-          >
+          <Link href="/login" className="rounded-xl border border-slate-700 bg-[#16213E] px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-cyan-400 hover:text-white">
             Sign in
           </Link>
         </header>
-
         <section className="grid flex-1 items-center gap-12 py-14 lg:grid-cols-[1fr_360px]">
           <div className="max-w-2xl">
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-sm text-cyan-200">
@@ -38,23 +32,15 @@ export default function HomePage() {
             <p className="mt-5 max-w-xl text-base leading-7 text-slate-300 sm:text-lg">
               Capture ideas, edit them cleanly, and come back to the right note without digging through clutter.
             </p>
-
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/register"
-                className="inline-flex items-center justify-center rounded-xl bg-cyan-400 px-6 py-3 font-semibold text-black transition hover:bg-cyan-300"
-              >
+              <Link href="/register" className="inline-flex items-center justify-center rounded-xl bg-cyan-400 px-6 py-3 font-semibold text-black transition hover:bg-cyan-300">
                 Sign up
               </Link>
-              <Link
-                href="/login"
-                className="inline-flex items-center justify-center rounded-xl border border-slate-700 bg-[#16213E] px-6 py-3 font-semibold text-white transition hover:border-cyan-400 hover:bg-[#1B2A50]"
-              >
+              <Link href="/login" className="inline-flex items-center justify-center rounded-xl border border-slate-700 bg-[#16213E] px-6 py-3 font-semibold text-white transition hover:border-cyan-400 hover:bg-[#1B2A50]">
                 Sign in
               </Link>
             </div>
           </div>
-
           <aside className="rounded-2xl border border-slate-800 bg-[#111A31] p-5 shadow-2xl">
             <div className="space-y-3">
               {features.map((feature) => {

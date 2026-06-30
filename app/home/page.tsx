@@ -14,6 +14,12 @@ type Note = {
     content: string;
     createdAt: string;
     updatedAt: string;
+    shared?: boolean;
+    attachments?: Array<{
+        name?: string;
+        size?: number;
+        type?: string;
+    }>;
 };
 
 type StoredUser = {
@@ -39,6 +45,9 @@ export default function Home() {
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [passwordLoading, setPasswordLoading] = useState(false);
+    const [shareNote, setShareNote] = useState<Note | null>(null);
+    const [includeFilesInShare, setIncludeFilesInShare] = useState(true);
+    const [shareLoading, setShareLoading] = useState(false);
 
     const getStoredUser = (): StoredUser => JSON.parse(localStorage.getItem("user") || "{}");
 
@@ -104,13 +113,66 @@ export default function Home() {
         }
     };
 
-    const handleShare = async (id: string) => {
+    const openShareModal = (note: Note) => {
+        setShareNote(note);
+        setIncludeFilesInShare((note.attachments?.length || 0) > 0);
+    };
+
+    const closeShareModal = () => {
+        if (shareLoading) return;
+        setShareNote(null);
+    };
+
+    const handleShare = async () => {
+        if (!shareNote) return;
         try {
-            await navigator.clipboard.writeText(`${window.location.origin}/share/${id}`);
+            setShareLoading(true);
+            const userdata = getStoredUser();
+            const res = await axios.put(
+                `http://localhost:5000/api/notes/share/${shareNote._id}`,
+                { includeFiles: includeFilesInShare },
+                { headers: { Authorization: `Bearer ${userdata.token}` } }
+            );
+            await navigator.clipboard.writeText(res.data.link);
+            setNotes((prev) =>
+                prev.map((note) =>
+                    note._id === shareNote._id ? { ...note, shared: true } : note
+                )
+            );
+            setShareNote((prev) => prev ? { ...prev, shared: true } : prev);
             toast.success("Link copied");
         }
         catch {
             toast.error("Share failed");
+        }
+        finally {
+            setShareLoading(false);
+        }
+    };
+
+    const removeAccess = async () => {
+        if (!shareNote) return;
+        try {
+            setShareLoading(true);
+            const userdata = getStoredUser();
+            await axios.put(
+                `http://localhost:5000/api/notes/unshare/${shareNote._id}`,
+                {},
+                { headers: { Authorization: `Bearer ${userdata.token}` } }
+            );
+            setNotes((prev) =>
+                prev.map((note) =>
+                    note._id === shareNote._id ? { ...note, shared: false } : note
+                )
+            );
+            setShareNote((prev) => prev ? { ...prev, shared: false } : prev);
+            toast.success("Access removed");
+        }
+        catch {
+            toast.error("Failed to remove access");
+        }
+        finally {
+            setShareLoading(false);
         }
     };
 
@@ -265,7 +327,7 @@ export default function Home() {
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                handleShare(note._id);
+                                                openShareModal(note);
                                             }}
                                             className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-800 text-green-400 transition hover:bg-green-500 hover:text-white"
                                             aria-label="Share note"
@@ -356,6 +418,67 @@ export default function Home() {
                         </div>
                     </aside>
                 </>
+            )}
+
+            {shareNote && (
+                <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/60 px-5 backdrop-blur-sm">
+                    <div className="w-full max-w-[420px] rounded-2xl border border-slate-700 bg-[#111A31] p-6 text-white shadow-2xl">
+                        <div className="flex items-start justify-between gap-4">
+                            <div className="min-w-0">
+                                <h2 className="text-xl font-semibold">Share note</h2>
+                                <p className="mt-1 truncate text-sm text-slate-400">{shareNote.title || "Untitled"}</p>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={closeShareModal}
+                                disabled={shareLoading}
+                                className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-800 hover:text-white disabled:opacity-60"
+                                aria-label="Close share modal"
+                            >
+                                <FiX size={20} />
+                            </button>
+                        </div>
+
+                        <label className="mt-6 flex items-center gap-3 rounded-xl border border-slate-700 bg-[#0D1528] p-3 text-sm">
+                            <input
+                                type="checkbox"
+                                checked={includeFilesInShare}
+                                disabled={(shareNote.attachments?.length || 0) === 0 || shareLoading}
+                                onChange={(e) => setIncludeFilesInShare(e.target.checked)}
+                            />
+                            <span>Include files</span>
+                        </label>
+
+                        <div className="mt-6 flex flex-wrap justify-end gap-3">
+                            <button
+                                type="button"
+                                onClick={closeShareModal}
+                                disabled={shareLoading}
+                                className="rounded-xl border border-slate-700 px-4 py-2 text-slate-300 transition hover:bg-slate-800 hover:text-white disabled:opacity-60"
+                            >
+                                Cancel
+                            </button>
+                            {shareNote.shared && (
+                                <button
+                                    type="button"
+                                    onClick={removeAccess}
+                                    disabled={shareLoading}
+                                    className="rounded-xl border border-red-500/40 px-4 py-2 text-red-300 transition hover:bg-red-500 hover:text-white disabled:opacity-60"
+                                >
+                                    Remove access
+                                </button>
+                            )}
+                            <button
+                                type="button"
+                                onClick={handleShare}
+                                disabled={shareLoading}
+                                className="rounded-xl bg-cyan-400 px-4 py-2 font-semibold text-black transition hover:bg-cyan-300 disabled:opacity-60"
+                            >
+                                {shareLoading ? "Working..." : "Copy link"}
+                            </button>
+                        </div>
+                    </div>
+                </div>
             )}
 
             {showPasswordModal && (
